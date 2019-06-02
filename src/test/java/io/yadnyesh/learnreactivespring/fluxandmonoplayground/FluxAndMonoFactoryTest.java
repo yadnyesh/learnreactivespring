@@ -8,6 +8,7 @@ import reactor.test.StepVerifier;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class FluxAndMonoFactoryTest {
 
@@ -26,7 +27,18 @@ public class FluxAndMonoFactoryTest {
     @Test
     public void justOrEmptyMono() {
         Mono<String> monoString = Mono.justOrEmpty(null);
-        StepVerifier.create(monoString)
+        StepVerifier.create(monoString.log())
                 .verifyComplete();
+    }
+
+    @Test
+    public void monoUsingSupplier() {
+        Supplier<String> stringSupplier = () -> "yadnyesh";
+        Mono<String> stringMono = Mono.fromSupplier(stringSupplier);
+        StepVerifier.create(stringMono.log())
+                .expectNext("yadnyesh")
+                .verifyComplete();
+
+
     }
 }
