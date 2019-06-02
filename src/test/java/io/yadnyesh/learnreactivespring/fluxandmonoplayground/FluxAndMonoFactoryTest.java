@@ -2,6 +2,7 @@ package io.yadnyesh.learnreactivespring.fluxandmonoplayground;
 
 import org.junit.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.lang.reflect.Array;
@@ -20,5 +21,12 @@ public class FluxAndMonoFactoryTest {
                 .expectNext("Adam", "Eve", "Nanna", "Tamma", "Rakul")
                 .verifyComplete();
 
+    }
+
+    @Test
+    public void justOrEmptyMono() {
+        Mono<String> monoString = Mono.justOrEmpty(null);
+        StepVerifier.create(monoString)
+                .verifyComplete();
     }
 }
