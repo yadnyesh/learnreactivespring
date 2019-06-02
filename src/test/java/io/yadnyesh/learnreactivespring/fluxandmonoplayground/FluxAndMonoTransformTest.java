@@ -21,4 +21,27 @@ public class FluxAndMonoTransformTest {
                 .verifyComplete();
 
     }
+
+    @Test
+    public void getLengthOfStrings(){
+        Flux<Integer> namesFlux = Flux.fromIterable(stringNames)
+                .map(s -> s.length())
+                .log();
+        StepVerifier.create(namesFlux)
+                .expectNext(4, 3, 5, 5, 5)
+                .verifyComplete();
+
+    }
+
+    @Test
+    public void getLengthOfStrings_repeat(){
+        Flux<Integer> namesFlux = Flux.fromIterable(stringNames)
+                .map(s -> s.length())
+                .repeat(1)
+                .log();
+        StepVerifier.create(namesFlux)
+                .expectNext(4, 3, 5, 5, 5, 4, 3, 5, 5, 5)
+                .verifyComplete();
+
+    }
 }
