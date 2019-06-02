@@ -100,7 +100,7 @@ public class FluxAndMonoTransformTest {
     public void transformUsingFlatMap_usingParallel_sequenceOfInputs() {
         Flux<String> stringFlux = Flux.fromIterable(Arrays.asList("A","B","C","D","E","F","G","H","I","J","K"))
                 .window(2)
-                .concatMap((s) ->
+                .flatMapSequential((s) ->
                         s.map(this::convertToList).subscribeOn(parallel())) //db or external call that returns a flux
                 .flatMap(s -> Flux.fromIterable(s))
                 .log();
