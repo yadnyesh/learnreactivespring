@@ -44,4 +44,17 @@ public class FluxAndMonoTransformTest {
                 .verifyComplete();
 
     }
+
+    @Test
+    public void fluxTransformWithMapAndFilter(){
+        Flux<Integer> namesFlux = Flux.fromIterable(stringNames)
+                .filter(s -> s.length() > 4)
+                .map(s -> s.length())
+                .repeat(1)
+                .log();
+        StepVerifier.create(namesFlux)
+                .expectNext(5, 5, 5, 5, 5, 5)
+                .verifyComplete();
+
+    }
 }
