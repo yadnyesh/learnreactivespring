@@ -59,4 +59,11 @@ public class FluxAndMonoTest {
                 .expectNext("Spring")
                 .verifyComplete();
     }
+
+    @Test
+    public void monoTestError() {
+        StepVerifier.create(Mono.error(new RuntimeException("Exception Custom Runtime")))
+                .expectError(RuntimeException.class)
+                .verify();
+    }
 }
