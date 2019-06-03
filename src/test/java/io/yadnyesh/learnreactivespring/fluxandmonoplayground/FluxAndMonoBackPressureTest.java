@@ -23,14 +23,12 @@ public class FluxAndMonoBackPressureTest {
 
 
     @Test
-    public void backPressureTest_1() {
+    public void backPressureTest_cancel() {
         Flux<Integer> finiteFlux = Flux.range(1, 10).log();
 
         finiteFlux.subscribe((e) ->
-            System.out.println("Element is : " + e), (e) -> System.err.println("Exception is :" + e),
+                        System.out.println("Element is : " + e), (e) -> System.err.println("Exception is :" + e),
                 () -> System.out.println("Done"),
-                (subscription -> subscription.request(2)));
-
-
+                (subscription -> subscription.cancel()));
     }
 }
