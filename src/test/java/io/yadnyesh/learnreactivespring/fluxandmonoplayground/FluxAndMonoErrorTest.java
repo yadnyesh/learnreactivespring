@@ -36,11 +36,22 @@ public class FluxAndMonoErrorTest
         StepVerifier.create(stringFlux.log())
                 .expectSubscription()
                 .expectNext("A", "B", "C")
-//                .expectError(RuntimeException.class)
-//                .verify();
                 .expectNext("default")
                 .verifyComplete();
     }
 
+    @Test
+    public void fluxErrorHandling_OnErrorMap() {
+        Flux stringFlux = Flux.just("A", "B", "C")
+                .concatWith(Flux.error(new RuntimeException("Exception Occurred")))
+                .concatWith(Flux.just("D"))
+                .onErrorMap((e) -> new CustomException(e));
+//Assign exception to the custom exception handler defined by Engineer
+        StepVerifier.create(stringFlux.log())
+                .expectSubscription()
+                .expectNext("A", "B", "C")
+                .expectError(CustomException.class)
+                .verify();
+    }
 }
 
