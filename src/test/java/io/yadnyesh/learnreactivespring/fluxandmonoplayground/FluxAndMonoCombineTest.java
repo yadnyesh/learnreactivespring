@@ -48,4 +48,20 @@ public class FluxAndMonoCombineTest {
                 .expectNext("A", "B", "C", "D", "E", "F")
                 .verifyComplete();
     }
+
+    @Test
+    public void combineUsingMerge_withZip() {
+        Flux<String> flux1 = Flux.just("A", "B", "C");
+        Flux<String> flux2 = Flux.just("D", "E", "F");
+
+        Flux<String> mergedFlux = Flux.zip(flux1,flux2, (t1, t2) -> {
+            return t1.concat(t2);
+        });
+
+        StepVerifier.create(mergedFlux.log())
+                .expectSubscription()
+                //.expectNextCount(6)
+                .expectNext("AD", "BE", "CF")
+                .verifyComplete();
+    }
 }
