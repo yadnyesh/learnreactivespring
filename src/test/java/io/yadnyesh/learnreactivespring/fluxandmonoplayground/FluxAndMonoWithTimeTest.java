@@ -39,4 +39,17 @@ public class FluxAndMonoWithTimeTest {
                 .expectNext(0, 1, 2)
                 .verifyComplete();
     }
+
+    @Test
+    public void InfiniteSequenceTest_WithDelay() throws InterruptedException {
+        Flux<Integer> infiniteFlux = Flux.interval(Duration.ofMillis(200))
+                .delayElements(Duration.ofSeconds(1))
+                .map(l -> new Integer(l.intValue()))
+                .take(3)
+                .log();
+        StepVerifier.create(infiniteFlux)
+                .expectSubscription()
+                .expectNext(0, 1, 2)
+                .verifyComplete();
+    }
 }
