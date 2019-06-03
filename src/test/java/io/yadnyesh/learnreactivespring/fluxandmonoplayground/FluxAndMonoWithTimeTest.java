@@ -8,9 +8,11 @@ import java.time.Duration;
 public class FluxAndMonoWithTimeTest {
 
     @Test
-    public void FluxAndMonoTimeTest() {
+    public void FluxAndMonoTimeTest() throws InterruptedException {
         Flux<Long> infiniteFlux = Flux.interval(Duration.ofMillis(200))
                 .log();
         infiniteFlux.subscribe((e) -> System.out.println("Current Element is: " + e));
+
+        Thread.sleep(3000);
     }
 }
