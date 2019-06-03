@@ -4,6 +4,8 @@ import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
+
 public class FluxAndMonoErrorTest
 {
 
@@ -60,14 +62,14 @@ public class FluxAndMonoErrorTest
                 .concatWith(Flux.error(new RuntimeException("Exception Occurred")))
                 .concatWith(Flux.just("D"))
                 .onErrorMap((e) -> new CustomException(e))
-                .retry(2);
+                .retryBackoff(2, Duration.ofSeconds(5));
 
         StepVerifier.create(stringFlux.log())
                 .expectSubscription()
                 .expectNext("A", "B", "C")
                 .expectNext("A", "B", "C")
                 .expectNext("A", "B", "C")
-                .expectError(CustomException.class)
+                .expectError(IllegalStateException.class)
                 .verify();
     }
 }
