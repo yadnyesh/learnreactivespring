@@ -53,5 +53,22 @@ public class FluxAndMonoErrorTest
                 .expectError(CustomException.class)
                 .verify();
     }
+
+    @Test
+    public void fluxErrorHandling_OnErrorMap_withRetry() {
+        Flux stringFlux = Flux.just("A", "B", "C")
+                .concatWith(Flux.error(new RuntimeException("Exception Occurred")))
+                .concatWith(Flux.just("D"))
+                .onErrorMap((e) -> new CustomException(e))
+                .retry(2);
+
+        StepVerifier.create(stringFlux.log())
+                .expectSubscription()
+                .expectNext("A", "B", "C")
+                .expectNext("A", "B", "C")
+                .expectNext("A", "B", "C")
+                .expectError(CustomException.class)
+                .verify();
+    }
 }
 
