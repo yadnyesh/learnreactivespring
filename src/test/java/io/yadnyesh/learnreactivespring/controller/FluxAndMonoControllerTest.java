@@ -37,4 +37,16 @@ public class FluxAndMonoControllerTest {
 
 
     }
+
+    @Test
+    public void flux_approach2() {
+
+        webTestClient.get().uri("/flux")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
+                .expectBodyList(Integer.class)
+                .hasSize(4);
+    }
 }
