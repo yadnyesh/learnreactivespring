@@ -70,4 +70,22 @@ public class FluxAndMonoControllerTest {
 
         Assert.assertEquals(expectedList, entityExchangeResult.getResponseBody());
     }
+
+    @Test
+    public void flux_approach4() {
+
+        List<Integer> expectedList = Arrays.asList(1,2,3,4);
+
+        webTestClient.get().uri("/flux")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .exchange()
+                .expectStatus().isOk()
+                //.expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
+                .expectBodyList(Integer.class)
+                .consumeWith((response) -> {
+                    Assert.assertEquals(expectedList, response.getResponseBody());
+                });
+
+        //Assert.assertEquals(expectedList, entityExchangeResult.getResponseBody());
+    }
 }
