@@ -91,4 +91,16 @@ public class ItemReactiveRepositoryTest {
                 .verifyComplete();
 
     }
+
+    @Test
+    public void deleteItemById() {
+        Mono<Void> deletedItem = itemReactiveRepository.findById("ABC")
+              .map(Item::getId)
+              .flatMap(itemId -> {
+                  return itemReactiveRepository.deleteById(itemId);
+              });
+        StepVerifier.create(deletedItem)
+              .expectSubscription()
+              .verifyComplete();
+    }
 }
