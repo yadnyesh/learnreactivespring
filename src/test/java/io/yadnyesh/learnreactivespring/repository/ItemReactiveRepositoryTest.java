@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.Arrays;
@@ -59,6 +60,16 @@ public class ItemReactiveRepositoryTest {
         StepVerifier.create(itemReactiveRepository.findByDescription("Bose Headphones").log())
                 .expectSubscription()
                 .expectNextCount(1)
+                .verifyComplete();
+    }
+
+    @Test
+    public void saveItem() {
+        Item testItem = new Item(null, "Google Home Mini", 30.00);
+        Mono<Item> savedItem = itemReactiveRepository.save(testItem);
+        StepVerifier.create(savedItem.log())
+                .expectSubscription()
+                .expectNextMatches(item -> (item.getId() != null && item.getDescription().equals("Google Home Mini")))
                 .verifyComplete();
     }
 }
