@@ -100,4 +100,11 @@ public class ItemControllerTest {
                 .expectBody()
                 .jsonPath("$.price", 149.99);
     }
+
+    @Test
+    public void getOneItem_NotFound() {
+        webTestClient.get().uri(ItemConstants.ITEM_END_POINT_V1.concat("/{id}"), "YAD")
+                .exchange()
+                .expectStatus().isNotFound();
+    }
 }
