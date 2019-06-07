@@ -3,6 +3,7 @@ package io.yadnyesh.learnreactivespring.controller.v1;
 import io.yadnyesh.learnreactivespring.constants.ItemConstants;
 import io.yadnyesh.learnreactivespring.domain.Item;
 import io.yadnyesh.learnreactivespring.repository.ItemReactiveRepository;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,5 +59,21 @@ public class ItemControllerTest {
                 .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
                 .expectBodyList(Item.class)
                 .hasSize(5);
+    }
+
+    @Test
+    public void getAllItems_approach2() {
+        webTestClient.get().uri(ItemConstants.ITEM_END_POINT_V1)
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
+                .expectBodyList(Item.class)
+                .hasSize(5)
+        .consumeWith((response) ->{
+            List<Item> itemList = response.getResponseBody();
+            itemList.forEach((item) -> {
+                Assert.assertTrue(item.getId() != null);
+            });
+        });
     }
 }
