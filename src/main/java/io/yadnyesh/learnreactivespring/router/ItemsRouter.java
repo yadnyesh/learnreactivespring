@@ -22,6 +22,8 @@ public class ItemsRouter {
 
         return RouterFunctions.route(GET(ItemConstants.ITEM_FUNCTIONAL_END_POINT_V1)
                                 .and(accept(MediaType.APPLICATION_JSON_UTF8))
-                                ,itemsHandler::getAllItems);
+                                ,itemsHandler::getAllItems)
+                                .andRoute(GET(ItemConstants.ITEM_FUNCTIONAL_END_POINT_V1+"/{id}")
+                                .and(accept(MediaType.APPLICATION_JSON_UTF8)), itemsHandler::getItemById);
     }
 }
