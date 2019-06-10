@@ -9,5 +9,4 @@ public class LearnreactivespringApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(LearnreactivespringApplication.class, args);
 	}
-
 }
