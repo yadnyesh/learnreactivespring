@@ -11,8 +11,7 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
-import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
-import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
+import static org.springframework.web.reactive.function.server.RequestPredicates.*;
 
 @Configuration
 public class ItemsRouter {
@@ -24,6 +23,8 @@ public class ItemsRouter {
                                 .and(accept(MediaType.APPLICATION_JSON_UTF8))
                                 ,itemsHandler::getAllItems)
                                 .andRoute(GET(ItemConstants.ITEM_FUNCTIONAL_END_POINT_V1+"/{id}")
-                                .and(accept(MediaType.APPLICATION_JSON_UTF8)), itemsHandler::getItemById);
+                                .and(accept(MediaType.APPLICATION_JSON_UTF8)), itemsHandler::getItemById)
+                                .andRoute(POST(ItemConstants.ITEM_FUNCTIONAL_END_POINT_V1).and(accept(MediaType.APPLICATION_JSON_UTF8))
+                                ,itemsHandler::createItem);
     }
 }
