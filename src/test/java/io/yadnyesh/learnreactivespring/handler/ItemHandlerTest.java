@@ -62,35 +62,35 @@ public class ItemHandlerTest {
                 .hasSize(5);
     }
 
-//    @Test
-//    public void getAllItems_approach2() {
-//        webTestClient.get().uri(ItemConstants.ITEM_END_POINT_V1)
-//                .exchange()
-//                .expectStatus().isOk()
-//                .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
-//                .expectBodyList(Item.class)
-//                .hasSize(5)
-//                .consumeWith((response) ->{
-//                    List<Item> itemList = response.getResponseBody();
-//                    itemList.forEach((item) -> {
-//                        Assert.assertTrue(item.getId() != null);
-//                    });
-//                });
-//    }
-//
-//    @Test
-//    public void getAllItems_approach3() {
-//        Flux<Item> itemFlux = webTestClient.get().uri(ItemConstants.ITEM_END_POINT_V1)
-//                .exchange()
-//                .expectStatus().isOk()
-//                .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
-//                .returnResult(Item.class)
-//                .getResponseBody();
-//
-//        StepVerifier.create(itemFlux.log("Item from Flux: "))
-//                .expectNextCount(5)
-//                .verifyComplete();
-//    }
+    @Test
+    public void getAllItems_approach2() {
+        webTestClient.get().uri(ItemConstants.ITEM_FUNCTIONAL_END_POINT_V1)
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
+                .expectBodyList(Item.class)
+                .hasSize(5)
+                .consumeWith((response) ->{
+                    List<Item> itemList = response.getResponseBody();
+                    itemList.forEach((item) -> {
+                        Assert.assertTrue(item.getId() != null);
+                    });
+                });
+    }
+
+    @Test
+    public void getAllItems_approach3() {
+        Flux<Item> itemFlux = webTestClient.get().uri(ItemConstants.ITEM_FUNCTIONAL_END_POINT_V1)
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
+                .returnResult(Item.class)
+                .getResponseBody();
+
+        StepVerifier.create(itemFlux.log("Item from Flux: "))
+                .expectNextCount(5)
+                .verifyComplete();
+    }
 //
 //    @Test
 //    public void getOneItem() {
