@@ -111,17 +111,16 @@ public class ItemHandlerTest {
     @Test
     public void createItem() {
         Item item = new Item(null, "Iphone X", 999.99);
-        webTestClient.post().uri(ItemConstants.ITEM_END_POINT_V1)
+        webTestClient.post().uri(ItemConstants.ITEM_FUNCTIONAL_END_POINT_V1)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .body(Mono.just(item), Item.class)
                 .exchange()
-                .expectStatus().isCreated()
+                //.expectStatus().isCreated()
+                .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("$.id").isNotEmpty()
                 .jsonPath("$.description").isEqualTo("Iphone X")
                 .jsonPath("$.price").isEqualTo(999.99);
-
-
     }
 //
 //    @Test
