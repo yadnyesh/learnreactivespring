@@ -73,16 +73,8 @@ public class ItemsHandler {
         return updatedItem.flatMap(item ->
            ServerResponse.ok()
             .contentType(MediaType.APPLICATION_JSON_UTF8)
-            .body(fromObject(item))
-            .switchIfEmpty(ServerResponse.notFound().build())
+            .body(fromObject(item)))
+            .switchIfEmpty(ServerResponse.notFound().build()
         );
-
-
-//        Mono<Item> itemToBeInserted = serverRequest.bodyToMono(Item.class);
-//
-//        Mono<Void> deleteItem = itemReactiveRepository.deleteById(itemId);
-//        return ServerResponse.ok()
-//                .contentType(MediaType.APPLICATION_JSON_UTF8)
-//                .body(deleteItem, Void.class);
     }
 }

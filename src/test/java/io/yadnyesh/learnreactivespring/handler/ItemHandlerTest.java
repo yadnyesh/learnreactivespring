@@ -132,34 +132,34 @@ public class ItemHandlerTest {
                 .expectBody(Void.class);
 
     }
-//
-//    @Test
-//    public void updateItem() {
-//        double newPrice = 1000.00;
-//        Item itemToUpdate = new Item(null, "Beats Headphones", newPrice);
-//
-//        webTestClient.put().uri(ItemConstants.ITEM_END_POINT_V1.concat("/{id}"), "ABC")
-//                .contentType(MediaType.APPLICATION_JSON_UTF8)
-//                .accept(MediaType.APPLICATION_JSON_UTF8)
-//                .body(Mono.just(itemToUpdate), Item.class)
-//                .exchange()
-//                .expectStatus().isOk()
-//                .expectBody()
-//                .jsonPath("$.price", newPrice);
-//
-//    }
-//
-//    @Test
-//    public void updateItemNotFound() {
-//        double newPrice = 1000.00;
-//        Item itemToUpdate = new Item(null, "Beats Headphones", newPrice);
-//
-//        webTestClient.put().uri(ItemConstants.ITEM_END_POINT_V1.concat("/{id}"), "YAD")
-//                .contentType(MediaType.APPLICATION_JSON_UTF8)
-//                .accept(MediaType.APPLICATION_JSON_UTF8)
-//                .body(Mono.just(itemToUpdate), Item.class)
-//                .exchange()
-//                .expectStatus().isNotFound();
-//
-//    }
+
+    @Test
+    public void updateItem() {
+        double newPrice = 1000.00;
+        Item itemToUpdate = new Item(null, "Beats Headphones", newPrice);
+
+        webTestClient.put().uri(ItemConstants.ITEM_FUNCTIONAL_END_POINT_V1.concat("/{id}"), "ABC")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(Mono.just(itemToUpdate), Item.class)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.price", newPrice);
+
+    }
+
+    @Test
+    public void updateItemNotFound() {
+        double newPrice = 1000.00;
+        Item itemToUpdate = new Item(null, "Beats Headphones", newPrice);
+
+        webTestClient.put().uri(ItemConstants.ITEM_FUNCTIONAL_END_POINT_V1.concat("/{id}"), "TAR")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(Mono.just(itemToUpdate), Item.class)
+                .exchange()
+                .expectStatus().isNotFound();
+
+    }
 }
