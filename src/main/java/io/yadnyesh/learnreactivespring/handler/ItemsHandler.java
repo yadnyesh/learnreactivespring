@@ -50,10 +50,39 @@ public class ItemsHandler {
     public Mono<ServerResponse> deleteItem(ServerRequest serverRequest){
         String itemId = serverRequest.pathVariable("id");
 
-        Mono<Item> itemToBeInserted = serverRequest.bodyToMono(Item.class);
+        //Mono<Item> itemToBeInserted = serverRequest.bodyToMono(Item.class);
         Mono<Void> deleteItem = itemReactiveRepository.deleteById(itemId);
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .body(deleteItem, Void.class);
+    }
+
+    public Mono<ServerResponse> updateItem(ServerRequest serverRequest){
+        String itemId = serverRequest.pathVariable("id");
+        Mono<Item> updatedItem = serverRequest.bodyToMono(Item.class)
+                .flatMap(item -> {
+                   Mono<Item> itemMono = itemReactiveRepository.findById(itemId)
+                            .flatMap(currentItem -> {
+                                currentItem.setDescription(item.getDescription());
+                                currentItem.setPrice(item.getPrice());
+                                return itemReactiveRepository.save(currentItem);
+                            });
+                   return itemMono;
+                });
+
+        return updatedItem.flatMap(item ->
+           ServerResponse.ok()
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .body(fromObject(item))
+            .switchIfEmpty(ServerResponse.notFound().build())
+        );
+
+
+//        Mono<Item> itemToBeInserted = serverRequest.bodyToMono(Item.class);
+//
+//        Mono<Void> deleteItem = itemReactiveRepository.deleteById(itemId);
+//        return ServerResponse.ok()
+//                .contentType(MediaType.APPLICATION_JSON_UTF8)
+//                .body(deleteItem, Void.class);
     }
 }
