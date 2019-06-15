@@ -77,4 +77,8 @@ public class ItemsHandler {
             .switchIfEmpty(ServerResponse.notFound().build()
         );
     }
+
+    public Mono<ServerResponse> itemEx(ServerRequest serverRequest) {
+            throw new RuntimeException("Runtime Exception in Functional endpoints");
+    }
 }
