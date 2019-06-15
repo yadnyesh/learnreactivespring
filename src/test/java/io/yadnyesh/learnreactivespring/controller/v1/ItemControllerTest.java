@@ -166,4 +166,14 @@ public class ItemControllerTest {
 
     }
 
+    @Test
+    public void runTimeException(){
+        webTestClient.get().uri(ItemConstants.ITEM_END_POINT_V1.concat("runtimeexception"))
+                .exchange()
+                .expectStatus().is5xxServerError()
+                .expectBody(String.class)
+                .isEqualTo("Delibrate Runtime Exception");
+
+    }
+
 }
