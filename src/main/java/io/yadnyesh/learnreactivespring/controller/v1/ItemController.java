@@ -15,6 +15,12 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class ItemController {
 
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
+        log.error("Exception caught: {} ", ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+    }
+
     @Autowired
     ItemReactiveRepository itemReactiveRepository;
 
@@ -41,6 +47,13 @@ public class ItemController {
     public Mono<Void> deleteItem(@PathVariable String id) {
         return itemReactiveRepository.deleteById(id);
     }
+
+    @GetMapping(ItemConstants.ITEM_END_POINT_V1 + "runtimeexception")
+    public Flux<Item> runtimeException() {
+        return itemReactiveRepository.findAll()
+                .concatWith(Mono.error(new RuntimeException("Delibrate Runtime Exception")));
+    }
+
 
     @PutMapping(ItemConstants.ITEM_END_POINT_V1 + "/{id}")
     public Mono<ResponseEntity<Item>> updateItem(@PathVariable String id, @RequestBody Item item) {
