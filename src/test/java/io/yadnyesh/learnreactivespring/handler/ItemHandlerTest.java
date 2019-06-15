@@ -162,4 +162,13 @@ public class ItemHandlerTest {
                 .expectStatus().isNotFound();
 
     }
+
+    @Test
+    public void runTimeException() {
+        webTestClient.get().uri("/functional/exception")
+                .exchange()
+                .expectStatus().is5xxServerError()
+                .expectBody()
+                .jsonPath("$.message", "Runtime Exception in Functional endpoints");
+    }
 }
