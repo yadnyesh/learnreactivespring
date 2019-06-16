@@ -48,7 +48,7 @@ public class ItemController {
         return itemReactiveRepository.deleteById(id);
     }
 
-    @GetMapping(ItemConstants.ITEM_END_POINT_V1 + "runtimeexception")
+    @GetMapping(ItemConstants.ITEM_END_POINT_V1 + "/runtimeexception")
     public Flux<Item> runtimeException() {
         return itemReactiveRepository.findAll()
                 .concatWith(Mono.error(new RuntimeException("Delibrate Runtime Exception")));
