@@ -36,4 +36,11 @@ public class ItemsRouter {
                 .and(accept(MediaType.APPLICATION_JSON_UTF8))
                 ,itemsHandler::itemEx);
     }
+
+    @Bean
+    public RouterFunction<ServerResponse> itemsStreamRouter(ItemsHandler itemsHandler) {
+        return RouterFunctions.route(GET(ItemConstants.ITEM_STREAM_FUNCTIONAL_END_POINT_V1)
+                        .and(accept(MediaType.APPLICATION_JSON_UTF8))
+                ,itemsHandler::itemsStream);
+    }
 }

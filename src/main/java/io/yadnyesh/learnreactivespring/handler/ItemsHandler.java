@@ -1,6 +1,8 @@
 package io.yadnyesh.learnreactivespring.handler;
 
 import io.yadnyesh.learnreactivespring.domain.Item;
+import io.yadnyesh.learnreactivespring.domain.ItemCapped;
+import io.yadnyesh.learnreactivespring.repository.ItemReactiveCappedRepository;
 import io.yadnyesh.learnreactivespring.repository.ItemReactiveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,6 +19,8 @@ public class ItemsHandler {
     @Autowired
     ItemReactiveRepository itemReactiveRepository;
 
+    @Autowired
+    ItemReactiveCappedRepository itemReactiveCappedRepository;
 
 
     public Mono<ServerResponse> getAllItems(ServerRequest serverRequest){
@@ -77,6 +81,14 @@ public class ItemsHandler {
             .switchIfEmpty(ServerResponse.notFound().build()
         );
     }
+
+    public Mono<ServerResponse> itemsStream(ServerRequest serverRequest){
+
+        return  ServerResponse.ok()
+                .contentType(MediaType.APPLICATION_STREAM_JSON)
+                .body(itemReactiveCappedRepository.findItemsBy(), ItemCapped.class);
+    }
+
 
     public Mono<ServerResponse> itemEx(ServerRequest serverRequest) {
             throw new RuntimeException("Runtime Exception in Functional endpoints");
