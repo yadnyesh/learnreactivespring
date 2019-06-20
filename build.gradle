@@ -1,9 +1,19 @@
+buildscript {
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:2.1.5.RELEASE")
+		classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6"
+	}
+}
+
 plugins {
 	id 'org.springframework.boot' version '2.1.5.RELEASE'
 	id 'java'
 }
 
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'jacoco'
+apply plugin: 'org.sonarqube'
+
 
 group = 'io.yadnyesh'
 version = '0.0.1-SNAPSHOT'
@@ -15,12 +25,27 @@ configurations {
 	}
 }
 
+jacoco {
+	toolVersion = "0.8.3"
+	reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled false
+		csv.enabled false
+		html.destination file("${buildDir}/jacocoHtml")
+	}
+}
+
 repositories {
 	mavenCentral()
+	maven { url "https://binrepo.target.com/artifactory/REDcard-Issuance" }
+	maven { url "https://binrepo.target.com/artifactory/jcenter-cache/com/palantir/jacoco-coverage/0.4.0/jacoco-coverage-0.4.0.jar"}
 }
 
 test {
-	exclude 'io/yadnyesh/learnreactivespring/fluxandmonoplayground/**'
+	finalizedBy jacocoTestReport
 }
 
 dependencies {
@@ -33,4 +58,5 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
 	testImplementation 'io.projectreactor:reactor-test'
+	compile(group: 'org.sonarsource.scanner.gradle', name: 'sonarqube-gradle-plugin', version: '2.6')
 }
